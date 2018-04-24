@@ -95,14 +95,7 @@ router.post('/signup', function(req,res)
     res.json("Signup Successful");
   }
 })
-  
-  
-
-
 });
-
-
-
 
 //login API
 router.post('/login', function(req,res)
@@ -110,7 +103,7 @@ router.post('/login', function(req,res)
   console.log("Login API called");
   var newusers1=new users;
   newusers1.email_address = req.body.email_address;
-  newusers1.username= req.body.username;
+  //newusers1.username= req.body.username;
   newusers1.password= req.body.password;
   console.log(req.body.email_address);
 
@@ -128,6 +121,10 @@ else{
     console.log("error in finding data from the users");
     res.json("Please enter correct credentials");
   }
+  else if(!users)
+  {
+    res.json("Check ur Email Address")
+  }
   
   else if(users.password===req.body.password)
   {
@@ -142,108 +139,61 @@ else{
   }
   
 })
-}
-
-  //console.log(email);
-  //console.log(password1);
-  
-  
-}
+}}
 );
 
-passport.serializeUser(function(users, done) {
-  done(null, users.email_address);
-});
 
-passport.deserializeUser(function(id, done) {
-  users.getUserById(id, function(err, users) {
-    done(err, users);
-  });
-});
-passport.use( new LocalStrategy(
+//Update User Account Details
+router.put('/update_user_account', function(req,res)
 {
-usernameField:'email_address',
-passwordField:'password'
+  if(req.session.email){
 
-},
-  function(username, password, done) {
-  console.log('in passport');
-  console.log(username);
-  console.log(password);
-  var query={'email_address':username}
- 
-  users.findOne(query)
-  .exec(function(err,user)
-{
-  console.log(user);
-  console.log(user.password);
-  if (err) { return done(err); }
-  if (!user) {
-    return done(null, false, { message: 'Incorrect username.' });
-  }
   
-  else if(user.password===password)
+  console.log("Update Profile Details API called");
+  var newusers1=new users;
+  newusers1.email_address = req.session.email;
+  newusers1.firstname= req.body.FirstName;
+  newusers1.lastname= req.body.LastName;
+  //newusers1.About_me=req.body.about_me;
+  //newusers1.skills=req.body.skills;
+  //var length=newusers.password.length;
+  users.findOneAndUpdate(
+    {'email_address':req.session.email},
+    {
+      $set:
+      {firstname:req.body.FirstName,
+        email_address:req.session.email,
+        lastname:req.body.LastName
+
+      }
+    },
+    
+    {
+      new:true
+      },
+    
+    function(err, updateduser)
+{
+  if(err)
   {
-    console.log(user);
-    //console.log("Login Successful")
-    //req.session.email=newusers1.email_address;
-    return done(null, user);
-   
-    //console.log(req.session.email);
+    console.log("Data not updated");
+     res.json("Updation unsuccessful");
   }
+  else{
+    console.log("Updated successfuly");
+    res.json("Updated successfuly");
+  }
+
   
 })
-
-}));
-
-
-
-//passport.use('login',new LocalStrategy(
-  //function(username, password, done) {
-    //console.log("In PAssport Local Strategy method");
-    //users.findOne({ username: req.body.email_address }, function (err, user) {
-     // if (err) { return done(err); }
-      //if (!user) {
-        //return done(null, false, { message: 'Incorrect username.' });
-      //}
-      //if (!user.validPassword(password)) {
-        //return done(null, false, { message: 'Incorrect password.' });
-      //}
-      //return done(null, user);
-    //});
-  //}
-//));
+  }
+  else{
+    res.json("Login First");
+  }
+});
 
 
-router.post('/login1',function(req,res){ 
-  passport.authenticate('local', function(err, user, info) {
-    console.log("Returned user in login api");
-    console.log(user);
-    console.log(user.email_address);
-    
 
-    if (err) 
-    { 
-      throw err; 
-    }
-    if (!user) 
-    { 
-       res.json("Login Failed");
-   }
-    else{
-      
-        req.session.email=user.email_address;
-         res.json("Login Successful");
-      
-      
-      //res.json();
-      
-    }
-  
-
-})(req,res);
-}
-);
 
 
 
