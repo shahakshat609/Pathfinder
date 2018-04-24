@@ -69,6 +69,8 @@ router.post('/signup', function(req,res)
   newusers.email_address = req.body.email_address;
   newusers.username= req.body.username;
   newusers.password= req.body.password;
+  newusers.firstname=req.body.FirstName;
+  newusers.lastname=req.body.LastName;
   
   console.log("Parameters taken successfully");
   //var length=req.body.password.length;
@@ -103,7 +105,7 @@ router.post('/signup', function(req,res)
 
 
 //login API
-router.post('/login1', function(req,res)
+router.post('/login', function(req,res)
 {
   console.log("Login API called");
   var newusers1=new users;
@@ -135,6 +137,8 @@ else{
     res.json("Login Successful");
    
     console.log(req.session.email);
+  }else{
+    res.json("Please enter correct credentials");
   }
   
 })
@@ -211,7 +215,7 @@ passwordField:'password'
 //));
 
 
-router.post('/login',function(req,res){ 
+router.post('/login1',function(req,res){ 
   passport.authenticate('local', function(err, user, info) {
     console.log("Returned user in login api");
     console.log(user);

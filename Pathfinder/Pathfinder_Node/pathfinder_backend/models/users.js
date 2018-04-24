@@ -11,7 +11,9 @@ email_address:{
     unique:true
 },
 username:String,
-password:String
+password:String,
+firstname:String,
+lastname:String
 });
 
 //first arg:name of the model
