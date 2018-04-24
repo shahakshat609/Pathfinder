@@ -24,6 +24,7 @@
     "mongo-connect": "0.0.6",
     "mongodb": "^3.0.5",
     "mongoose": "^5.0.13",
+    "mongoose-timestamp": "^0.6.0",
     "morgan": "~1.9.0",
     "mysql": "^2.15.0",
     "nodemailer": "^4.6.4",

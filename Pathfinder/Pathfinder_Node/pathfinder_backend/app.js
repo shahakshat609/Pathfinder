@@ -32,11 +32,11 @@ var corsOptions = {
 var index = require('./routes/index');
 var users = require('./routes/users');
 var post = require('./routes/post_project');
-
+var jobseeker_ques=require('./routes/jobseeker_ques');
 var profile = require('./routes/profile');
 var bids = require('./routes/bids');
 var account = require('./routes/account');
-
+var jobposter = require('./routes/jobposter');
 var app = express();
 //app.use(cors());
 app.use(cors(corsOptions))
@@ -84,16 +84,8 @@ app.use('/post', post);
 app.use('/bids',bids);
 app.use('/profile', profile);
 app.use('/account', account);
-
-passport.serializeUser(function(users, done) {
-  done(null, users.email_address);
-});
-
-passport.deserializeUser(function(id, done) {
-  users.getUserById(id, function(err, users) {
-    done(err, users);
-  });
-});
+app.use('/jobseeker_ques', jobseeker_ques);
+app.use('/jobposter', jobposter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -32,9 +32,9 @@ router.get('/userdetails',function(req,res)
 {
   if(req.session.email)
  {
-   console.log(req.session.email);
+   //console.log(req.session.email);
   console.log('User details request API called');
-  user_details.findOne({'email_address':req.session.email})
+  users.findOne({'email_address':req.session.email})
   .exec(function(err,users)
 {
   if(err)
